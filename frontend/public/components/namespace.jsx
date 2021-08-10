@@ -42,6 +42,10 @@ import {
   useUserSettingsCompatibility,
   isModifiedEvent,
   REQUESTER_FILTER,
+  LazyActionMenu,
+  ActionServiceProvider,
+  ActionMenu,
+  ActionMenuVariant,
 } from '@console/shared';
 import { ByteDataTypes } from '@console/shared/src/graph-helper/data-utils';
 
@@ -53,7 +57,7 @@ import {
   ServiceAccountModel,
 } from '../models';
 import { coFetchJSON } from '../co-fetch';
-import { k8sGet, referenceForModel } from '../module/k8s';
+import { k8sGet, referenceForModel, referenceFor } from '../module/k8s';
 import * as k8sActions from '../actions/k8s';
 import * as UIActions from '../actions/ui';
 import { DetailsPage, ListPage, Table, TableData } from './factory';
@@ -333,6 +337,8 @@ const NamespacesTableRow = connect(namespacesRowStateToProps)(
     const labels = ns.metadata.labels;
     const columns =
       tableColumns?.length > 0 ? new Set(tableColumns) : getNamespacesSelectedColumns();
+    const resourceKind = referenceFor(ns);
+    const context = { [resourceKind]: ns };
     return (
       <>
         <TableData className={namespaceColumnInfo.name.classes}>
@@ -401,7 +407,7 @@ const NamespacesTableRow = connect(namespacesRowStateToProps)(
           <LabelList kind="Namespace" labels={labels} />
         </TableData>
         <TableData className={Kebab.columnClass}>
-          <ResourceKebab actions={nsMenuActions} kind="Namespace" resource={ns} />
+          <LazyActionMenu context={context} />
         </TableData>
       </>
     );
@@ -659,6 +665,8 @@ const ProjectTableRow = connect(projectRowStateToProps)(
         ? new Set(tableColumns)
         : getProjectSelectedColumns({ showMetrics, showActions })
       : null;
+    const resourceKind = referenceFor(project);
+    const context = { [resourceKind]: project };
     return (
       <>
         <TableData className={namespaceColumnInfo.name.classes}>
@@ -742,7 +750,7 @@ const ProjectTableRow = connect(projectRowStateToProps)(
         )}
         {actionsEnabled && (
           <TableData className={Kebab.columnClass}>
-            <ResourceKebab actions={projectMenuActions} kind="Project" resource={project} />
+            <LazyActionMenu context={context} />
           </TableData>
         )}
       </>
@@ -1224,10 +1232,24 @@ const namespaceBarStateToProps = ({ k8s }) => {
 /** @type {React.FC<{children?: ReactNode, disabled?: boolean, onNamespaceChange?: Function, hideProjects?: boolean}>} */
 export const NamespaceBar = connect(namespaceBarStateToProps)(NamespaceBar_);
 
+export const customActionMenu = (kindObj, obj) => {
+  const resourceKind = referenceForModel(kindObj);
+  const context = { [resourceKind]: obj };
+  return (
+    <ActionServiceProvider context={context}>
+      {({ actions, options, loaded }) =>
+        loaded && (
+          <ActionMenu actions={actions} options={options} variant={ActionMenuVariant.DROPDOWN} />
+        )
+      }
+    </ActionServiceProvider>
+  );
+};
+
 export const NamespacesDetailsPage = (props) => (
   <DetailsPage
     {...props}
-    menuActions={nsMenuActions}
+    customActionMenu={customActionMenu}
     pages={[
       navFactory.details(NamespaceDetails),
       navFactory.editYaml(),
@@ -1241,7 +1263,7 @@ export const ProjectsDetailsPage = (props) => {
   return (
     <DetailsPage
       {...props}
-      menuActions={projectMenuActions}
+      customActionMenu={customActionMenu}
       pages={[
         {
           href: '',

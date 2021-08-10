@@ -1,0 +1,251 @@
+[
+  {
+    "type": "console.flag/model",
+    "properties": {
+      "flag": "IBM_STORAGE_SPP",
+      "model": {
+        "group": "baas.io",
+        "version": "v1alpha1",
+        "kind": "BaaSReq"
+      }
+    }
+  },
+  {
+    "type": "console.flag/model",
+    "properties": {
+      "flag": "IBM_STORAGE_SPP",
+      "model": {
+        "group": "data-protection.isf.ibm.com",
+        "version": "v1alpha1",
+        "kind": "Backup"
+      }
+    }
+  },
+  {
+    "type": "console.navigation/section",
+    "properties": {
+      "id": "backuprestore",
+      "name": "Backup and Restore"
+    }
+  },
+  {
+    "type": "console.navigation/resource-ns",
+    "properties": {
+      "id": "applications",
+      "section": "backuprestore",
+      "name": "Applications",
+      "model": {
+        "group": "application.isf.ibm.com",
+        "version": "v1alpha1",
+        "kind": "Application"
+      }
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.navigation/href",
+    "properties": {
+      "id": "appbackuplist",
+      "section": "backuprestore",
+      "name": "Backup List",
+      "href": "/k8s/all-namespaces/data-protection.isf.ibm.com~v1alpha1~Backup"
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.navigation/href",
+    "properties": {
+      "id": "apprestorelist",
+      "section": "backuprestore",
+      "name": "Restore List",
+      "href": "/k8s/all-namespaces/data-protection.isf.ibm.com~v1alpha1~Restore"
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.navigation/href",
+    "properties": {
+      "id": "backuppolicy",
+      "section": "backuprestore",
+      "name": "Backup Policy",
+      "href": "/k8s/all-namespaces/data-protection.isf.ibm.com~v1alpha1~BackupPolicy"
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.navigation/href",
+    "properties": {
+      "id": "backupstoragelocation",
+      "section": "backuprestore",
+      "name": "Backup Storage Locations",
+      "href": "/k8s/all-namespaces/data-protection.isf.ibm.com~v1alpha1~BackupStorageLocation"
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.navigation/resource-ns",
+    "properties": {
+      "id": "hooks",
+      "section": "backuprestore",
+      "name": "Hooks",
+      "model": {
+        "group": "data-protection.isf.ibm.com",
+        "version": "v1alpha1",
+        "kind": "Hook"
+      }
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.resource/create",
+    "properties": {
+      "model": {
+        "group": "data-protection.isf.ibm.com",
+        "version": "v1alpha1",
+        "kind": "Backup"
+      },
+      "component": { "$codeRef": "pages.BackupCreationPage" }
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.action/resource-provider",
+    "properties": {
+      "model": {
+        "group": "core",
+        "version": "v1",
+        "kind": "Namespace"
+      },
+      "provider": { "$codeRef": "actions.useNamespaceActionsProvider" }
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.action/resource-provider",
+    "properties": {
+      "model": {
+        "group": "project.openshift.io",
+        "version": "v1",
+        "kind": "Project"
+      },
+      "provider": { "$codeRef": "actions.useNamespaceActionsProvider" }
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.action/resource-provider",
+    "properties": {
+      "model": {
+        "group": "apps",
+        "version": "v1",
+        "kind": "Deployment"
+      },
+      "provider": { "$codeRef": "actions.useWorkloadActionsProvider" }
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.action/resource-provider",
+    "properties": {
+      "model": {
+        "group": "apps",
+        "version": "v1",
+        "kind": "StatefulSet"
+      },
+      "provider": { "$codeRef": "actions.useWorkloadActionsProvider" }
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.action/resource-provider",
+    "properties": {
+      "model": {
+        "group": "core",
+        "version": "v1",
+        "kind": "Secret"
+      },
+      "provider": { "$codeRef": "actions.useWorkloadActionsProvider" }
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.action/resource-provider",
+    "properties": {
+      "model": {
+        "group": "core",
+        "version": "v1",
+        "kind": "ConfigMap"
+      },
+      "provider": { "$codeRef": "actions.useWorkloadActionsProvider" }
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.action/resource-provider",
+    "properties": {
+      "model": {
+        "group": "apps",
+        "version": "v1",
+        "kind": "CronJob"
+      },
+      "provider": { "$codeRef": "actions.useWorkloadActionsProvider" }
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.action/resource-provider",
+    "properties": {
+      "model": {
+        "group": "apps",
+        "version": "v1",
+        "kind": "DaemonSet"
+      },
+      "provider": { "$codeRef": "actions.useWorkloadActionsProvider" }
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  },
+  {
+    "type": "console.action/resource-provider",
+    "properties": {
+      "model": {
+        "group": "core",
+        "version": "v1",
+        "kind": "PersistentVolumeClaim"
+      },
+      "provider": { "$codeRef": "actions.useWorkloadActionsProvider" }
+    },
+    "flags": {
+      "required": ["IBM_STORAGE_SPP"]
+    }
+  }
+]

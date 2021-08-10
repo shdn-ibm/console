@@ -187,6 +187,12 @@ const AdminNav: React.FC<AdminNavProps> = ({ pluginNavItems }) => {
       />
 
       <NavSection
+        id="backuprestore"
+        title={t('Backup and Restore')}
+        data-quickstart-id="qs-nav-backuprestore"
+      />
+
+      <NavSection
         id="networking"
         title={t('public~Networking')}
         data-quickstart-id="qs-nav-networking"
