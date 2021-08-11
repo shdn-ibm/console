@@ -135,7 +135,7 @@ export const createFlashSystemPayload: CreatePayload<FlashSystemState> = (
   const storageSecretTemplate: SecretKind = {
     apiVersion: apiVersionForModel(SecretModel),
     stringData: {
-      managementAddress: form.endpoint,
+      management_address: form.endpoint,
       password: form.password,
       username: form.username,
     },
